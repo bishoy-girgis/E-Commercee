@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/Domain/entity/home/category_entity.dart';
+import 'package:e_commerce_app/Domain/entity/home/product_entity.dart';
 
 import '../../../Core/error/faliure.dart';
 
@@ -20,10 +21,22 @@ class HomeGetCategorySuccessState extends HomeStates {
   HomeGetCategorySuccessState(this.model);
 }
 
+class HomeGetProductSuccessState extends HomeStates {
+  ProductEntity model;
+
+  HomeGetProductSuccessState(this.model);
+}
+
 class HomeGetBrandErrorState extends HomeStates {
   Failure failure;
 
   HomeGetBrandErrorState(this.failure);
+}
+
+class HomeGetProductErrorState extends HomeStates {
+  Failure failure;
+
+  HomeGetProductErrorState(this.failure);
 }
 
 class HomeGetCategoryErrorState extends HomeStates {

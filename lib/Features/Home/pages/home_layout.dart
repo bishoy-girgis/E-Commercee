@@ -15,7 +15,8 @@ class Homelayout extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeCubit(HomeRemoteDto())
         ..getCategories()
-        ..getBrands(),
+        ..getBrands()
+      ..getProduct(),
       child: BlocConsumer<HomeCubit, HomeStates>(
         listener: (context, state) {
           if (state is HomeLoadingState) {
@@ -27,6 +28,24 @@ class Homelayout extends StatelessWidget {
                 ),
                 backgroundColor: Colors.transparent,
                 elevation: 0,
+              ),
+            );
+          } else if (state is HomeGetProductErrorState) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: Colors.white,
+                elevation: 0.0,
+                title: Text("Errorrr"),
+                content: Text(state.failure.statusCode ?? ""),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             );
           }

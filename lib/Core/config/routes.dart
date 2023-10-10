@@ -1,6 +1,8 @@
 import 'package:e_commerce_app/Core/config/page_route_name.dart';
+import 'package:e_commerce_app/Domain/entity/home/product_entity.dart';
 import 'package:e_commerce_app/Features/Home/pages/home_layout.dart';
 import 'package:e_commerce_app/Features/Login/pages/login_view.dart';
+import 'package:e_commerce_app/Features/Product_Details/pages/product_details_view.dart';
 import 'package:e_commerce_app/Features/Splash/splash_view.dart';
 import 'package:e_commerce_app/Features/signup/pages/signup_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +23,11 @@ class Routes {
       case PageRouteName.home:
         return MaterialPageRoute(
             builder: (context) => const Homelayout(), settings: routeSettings);
+      case PageRouteName.productDetails:
+        ProductDataEntity product = routeSettings.arguments as ProductDataEntity;
+        return MaterialPageRoute(
+            builder: (context) => ProductDetailsView(product),
+            settings: routeSettings);
       default:
         return MaterialPageRoute<dynamic>(
             builder: (context) => const SplashView(), settings: routeSettings);
