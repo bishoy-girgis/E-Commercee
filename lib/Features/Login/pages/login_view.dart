@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/Core/extentions/extentions.dart';
+import 'package:e_commerce_app/Core/services/cache_helper.dart';
 import 'package:e_commerce_app/Features/Login/manager/cubit.dart';
 import 'package:e_commerce_app/Features/Login/manager/states.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,8 @@ class _LoginViewState extends State<LoginView> {
     loginUseCase = LoginUseCase(loginRepository);
     super.initState();
   }
+
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -71,16 +74,20 @@ class _LoginViewState extends State<LoginView> {
               ),
             );
           } else if (state is LoginSuccessState) {
+            CacheHelper.saveData(key: "user", value: state.user.token);
+            CacheHelper.saveData(key: "username", value: state.user.userName);
+            CacheHelper.saveData(key: "usermail", value: state.user.email);
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
                 backgroundColor: Colors.white,
                 elevation: 0.0,
-                title: const Text("Login Successfully"),
+                title: Text(state.user.token ?? ""),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
-                     navigatorKey.currentState?.pushNamedAndRemoveUntil(PageRouteName.home, (route) => false);
+                      navigatorKey.currentState?.pushNamedAndRemoveUntil(
+                          PageRouteName.home, (route) => false);
                     },
                     child: const Text('OK'),
                   ),
@@ -93,78 +100,99 @@ class _LoginViewState extends State<LoginView> {
           var theme = Theme.of(context);
           var mediaQuery = MediaQuery.of(context).size;
           var cubit = LoginCubit().get(context);
-          return Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.asset(
-                    "assets/images/logos/route_logo.png",
-                    scale: 1.2,
-                  ),
-                  Text("Welcome Back To Route ",
-                          style: theme.textTheme.headlineMedium)
-                      .setOnlyVerticalPadding(context, top: 0.02),
-                  Text(
-                    "Please sign in with your mail",
-                    style: theme.textTheme.bodySmall,
-                  ).setOnlyVerticalPadding(context, bottom: 0.03, top: 0.002),
-                  Text(
-                    "User name",
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                  CustomTextField(
-                    hint: "enter your user name",
-                    controller: cubit.userNameController,
-                  ).setOnlyVerticalPadding(context, top: 0.01, bottom: 0.03),
-                  Text(
-                    "Password",
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                  CustomTextField(
-                    hint: "enter your password",
-                    controller: cubit.passwordController,
-                    isPassword: true,
-                  ).setOnlyVerticalPadding(context, top: 0.01),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Forgot password",
-                          style: theme.textTheme.bodySmall,
-                        )).setOnlyVerticalPadding(context, bottom: 0.15),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      cubit.logIn();
-                    },
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll(theme.primaryColor),
-                      padding:
-                          const MaterialStatePropertyAll(EdgeInsets.all(14)),
-                      shape: MaterialStatePropertyAll(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
+          return Form(
+            key: formKey,
+            child: Scaffold(
+              body: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Image.asset(
+                      "assets/images/logos/route_logo.png",
+                      scale: 1.2,
+                    ),
+                    Text("Welcome Back To Route ",
+                            style: theme.textTheme.headlineMedium)
+                        .setOnlyVerticalPadding(context, top: 0.02),
+                    Text(
+                      "Please sign in with your mail",
+                      style: theme.textTheme.bodySmall,
+                    ).setOnlyVerticalPadding(context, bottom: 0.03, top: 0.002),
+                    Text(
+                      "User name",
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    CustomTextField(
+                      onValidate: (String? value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "you must enter your e-mail";
+                        } else {
+                          return null;
+                        }
+                      },
+                      hint: "enter your user name",
+                      controller: cubit.userNameController,
+                    ).setOnlyVerticalPadding(context, top: 0.01, bottom: 0.03),
+                    Text(
+                      "Password",
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    CustomTextField(
+                      onValidate: (String? value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "you must enter your password";
+                        } else if (value.length < 6) {
+                          return "description cant be less than 6 characters";
+                        } else {
+                          return null;
+                        }
+                      },
+                      hint: "enter your password",
+                      controller: cubit.passwordController,
+                      isPassword: true,
+                    ).setOnlyVerticalPadding(context, top: 0.01),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Forgot password",
+                            style: theme.textTheme.bodySmall,
+                          )).setOnlyVerticalPadding(context, bottom: 0.15),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          cubit.logIn();
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(theme.primaryColor),
+                        padding:
+                            const MaterialStatePropertyAll(EdgeInsets.all(14)),
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
                         ),
                       ),
+                      child: Text("Login", style: theme.textTheme.bodyLarge),
                     ),
-                    child: Text("Login", style: theme.textTheme.bodyLarge),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        navigatorKey.currentState
-                            ?.pushReplacementNamed(PageRouteName.signUp);
-                      },
-                      child: Text(
-                        "Don’t have an account? Create Account",
-                        style: theme.textTheme.bodySmall,
-                      )).setOnlyVerticalPadding(context, top: 0.01)
-                ],
-              )
-                  .setOnlyVerticalPadding(context, top: 0.1)
-                  .setHorizontalPadding(context, 0.04),
+                    TextButton(
+                        onPressed: () {
+                          navigatorKey.currentState
+                              ?.pushReplacementNamed(PageRouteName.signUp);
+                        },
+                        child: Text(
+                          "Don’t have an account? Create Account",
+                          style: theme.textTheme.bodySmall,
+                        )).setOnlyVerticalPadding(context, top: 0.01)
+                  ],
+                )
+                    .setOnlyVerticalPadding(context, top: 0.1)
+                    .setHorizontalPadding(context, 0.04),
+              ),
             ),
           );
         },

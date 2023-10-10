@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:e_commerce_app/Core/config/page_route_name.dart';
 import 'package:e_commerce_app/Data/data_sources/home/home_datasource.dart';
 import 'package:e_commerce_app/Features/Home/manager/cubit.dart';
 import 'package:e_commerce_app/Features/Home/manager/states.dart';
@@ -15,7 +16,9 @@ class Homelayout extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeCubit(HomeRemoteDto())
         ..getCategories()
-        ..getBrands(),
+        ..getBrands()
+        ..getProduct()
+      ..getWishList(),
       child: BlocConsumer<HomeCubit, HomeStates>(
         listener: (context, state) {
           if (state is HomeLoadingState) {
@@ -29,6 +32,24 @@ class Homelayout extends StatelessWidget {
                 elevation: 0,
               ),
             );
+          } else if (state is AddToCartErrorState) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: Colors.white,
+                elevation: 0.0,
+                title: Text("Errorrr"),
+                content: Text(state.failure.statusCode ?? ""),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
           }
         },
         builder: (context, state) {
@@ -36,6 +57,26 @@ class Homelayout extends StatelessWidget {
           return Scaffold(
             extendBody: true,
             appBar: AppBar(
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Badge(
+                    alignment: AlignmentDirectional.topCenter,
+                    label: Text(cubit.numOfItemsInCart.toString()),
+                    child: IconButton(
+                      onPressed: () {
+                        print(cubit.numOfItemsInCart.toString());
+                        Navigator.pushNamed(context, PageRouteName.cart);
+                      },
+                      icon: Icon(
+                        CupertinoIcons.cart,
+                        color: theme.primaryColor,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                )
+              ],
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               centerTitle: false,

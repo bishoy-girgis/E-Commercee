@@ -12,13 +12,13 @@ class LoginRepositoryImp implements LoginRepository {
   LoginRepositoryImp(this.loginDataSource);
 
   @override
-  Future<Either<Failure, bool>> login(String userName, String password) async {
+  Future<Either<Failure, User>> login(String userName, String password) async {
     try {
       var result = await loginDataSource.login(userName, password);
 
       if (result.statusCode == 200 && result.data["message"] == "success") {
         User user = User.fromJson(result.data);
-        return const Right(true);
+        return Right(user);
       } else {
         return Left(
           ServerFailure(

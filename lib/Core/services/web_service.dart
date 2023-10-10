@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:e_commerce_app/Core/constants/constants.dart';
 
 class WebService {
   Dio publicDio = Dio();

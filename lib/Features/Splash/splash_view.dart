@@ -11,7 +11,7 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Timer(const Duration(seconds: 5), () {
-      navigatorKey.currentState?.pushReplacementNamed(PageRouteName.home);
+      navigatorKey.currentState?.pushReplacementNamed(PageRouteName.login);
     });
     var mediaQuery = MediaQuery.of(context).size;
     return Scaffold(
