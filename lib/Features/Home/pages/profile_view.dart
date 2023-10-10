@@ -1,0 +1,15 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class ProfileView extends StatelessWidget {
+  const ProfileView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        child: Text("PROFILE",style: Theme.of(context).textTheme.headlineMedium),
+      ),
+    );
+  }
+}
