@@ -4,5 +4,7 @@ import 'package:e_commerce_app/Domain/entity/home/category_entity.dart';
 
 abstract class HomeRepository{
 
-  Future<Either<Failure, List<CategoryEntity>>> getCategories();
+  Future<Either<Failure, CategoryOrBrandEntity>> getCategories();
+
+  Future<Either<Failure, CategoryOrBrandEntity>> getBrands();
 }

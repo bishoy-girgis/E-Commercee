@@ -1,6 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:e_commerce_app/Core/extentions/extentions.dart';
-import 'package:e_commerce_app/Core/widgets/custom_textfield.dart';
+import 'package:e_commerce_app/Data/data_sources/home/home_datasource.dart';
 import 'package:e_commerce_app/Features/Home/manager/cubit.dart';
 import 'package:e_commerce_app/Features/Home/manager/states.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,11 +13,26 @@ class Homelayout extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return BlocProvider(
-      create: (context) => HomeCubit()..getCategories(),
+      create: (context) => HomeCubit(HomeRemoteDto())
+        ..getCategories()
+        ..getBrands(),
       child: BlocConsumer<HomeCubit, HomeStates>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is HomeLoadingState) {
+            showDialog(
+              context: context,
+              builder: (context) => const AlertDialog(
+                title: Center(
+                  child: CircularProgressIndicator(),
+                ),
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+            );
+          }
+        },
         builder: (context, state) {
-          var cubit = HomeCubit().get(context);
+          var cubit = HomeCubit.get(context);
           return Scaffold(
             extendBody: true,
             appBar: AppBar(

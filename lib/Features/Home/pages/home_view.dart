@@ -14,19 +14,19 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context).size;
-    var cubit = HomeCubit().get(context);
+    var cubit = HomeCubit.get(context);
     var theme = Theme.of(context);
     return BlocConsumer<HomeCubit, HomeStates>(
       listener: (context, state) {
-        if (state is GetCategoryLoadingState) {
-          Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
-          );
-        } else if (state is GetCategoryErrorState) {
-          Center(child: Text("Error : ${state.failure.statusCode}"));
-        } else if (state is GetCategorySuccessState) {}
+        // if (state is GetCategoryLoadingState) {
+        //   Center(
+        //     child: CircularProgressIndicator(
+        //       backgroundColor: Theme.of(context).primaryColor,
+        //     ),
+        //   );
+        // } else if (state is GetCategoryErrorState) {
+        //   Center(child: Text("Error : ${state.failure.statusCode}"));
+        // } else if (state is GetCategorySuccessState) {}
       },
       builder: (context, state) {
         return ListView(
@@ -64,9 +64,18 @@ class HomeView extends StatelessWidget {
               isLoop: true,
               children: cubit.slidesImages,
             ).setVerticalPadding(context, 0.013),
-            Text(
-              "Categories",
-              style: theme.textTheme.bodyMedium,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Categories",
+                  style: theme.textTheme.bodyMedium,
+                ),
+                Text(
+                  "View all",
+                  style: theme.textTheme.displaySmall,
+                ),
+              ],
             ),
             const SizedBox(
               height: 10,
@@ -75,18 +84,19 @@ class HomeView extends StatelessWidget {
               width: mediaQuery.width,
               height: mediaQuery.height * 0.3,
               child: GridView.builder(
-                itemCount: cubit.categoriesList.length,
+                itemCount: cubit.categories.length,
                 itemBuilder: (context, index) => Column(
                   children: [
                     CircleAvatar(
-                      radius: 40,
+                      radius: 38,
                       backgroundImage: NetworkImage(
-                        cubit.categoriesList[index].imageUrl,
+                        cubit.categories[index].image ?? "",
                         scale: 1.5,
                       ),
                     ),
+                    const SizedBox(height: 6),
                     Text(
-                      cubit.categoriesList[index].title,
+                      cubit.categories[index].name ?? "",
                       style: theme.textTheme.displaySmall,
                     ),
                   ],
@@ -99,9 +109,46 @@ class HomeView extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
               ),
             ),
-
+            Text(
+              "Brands",
+              style: theme.textTheme.bodyMedium,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              width: mediaQuery.width,
+              height: mediaQuery.height * 0.31,
+              child: GridView.builder(
+                itemCount: cubit.brands.length,
+                itemBuilder: (context, index) => Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(40)),
+                        child: Image(
+                          image: NetworkImage(
+                            cubit.brands[index].image ?? "",
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      cubit.brands[index].name ?? "",
+                      style: theme.textTheme.displaySmall,
+                    ),
+                  ],
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 4,
+                  mainAxisSpacing: 8,
+                  crossAxisCount: 2,
+                ),
+                scrollDirection: Axis.horizontal,
+              ),
+            )
           ],
-        ).setHorizontalPadding(context, 0.03);
+        ).setOnlyVerticalPadding(context,right: 0.03,left: 0.03,bottom: 0.05);
       },
     );
   }

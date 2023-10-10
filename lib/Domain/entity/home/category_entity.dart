@@ -1,14 +1,33 @@
 import 'package:equatable/equatable.dart';
 
-class CategoryEntity extends Equatable {
-  final String id;
-  final String title;
-  final String imageUrl;
+class CategoryOrBrandEntity extends Equatable {
+  CategoryOrBrandEntity({
+    this.results,
+    this.data,
+  });
 
-  const CategoryEntity(
-      {required this.title,  required this.id, required this.imageUrl});
+  int? results;
+  List<DataEntity>? data;
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id, title, imageUrl];
+  List<Object?> get props => [results, data];
+}
+
+class DataEntity extends Equatable {
+  DataEntity({
+    this.id,
+    this.name,
+    this.slug,
+    this.image,
+  });
+
+  String? id;
+  String? name;
+  String? slug;
+  String? image;
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id, name, slug, image];
 }

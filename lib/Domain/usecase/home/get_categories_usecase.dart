@@ -5,11 +5,11 @@ import '../../../Core/error/faliure.dart';
 import '../../entity/home/category_entity.dart';
 
 class GetCategoriesUseCase {
-  final HomeRepository getCategoriesRepository;
+  final HomeRepository homeRepository;
 
-  GetCategoriesUseCase(this.getCategoriesRepository);
+  GetCategoriesUseCase(this.homeRepository);
 
-  Future<Either<Failure, List<CategoryEntity>>> excute() async {
-    return await getCategoriesRepository.getCategories();
+  Future<Either<Failure, CategoryOrBrandEntity>> execute() async {
+    return await homeRepository.getCategories();
   }
 }
