@@ -15,11 +15,11 @@ class ProfileView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Welcome, ${User().userName}",
+          "Welcome, ${CacheHelper.getData("username")}",
           style: theme.textTheme.bodyMedium,
         ),
         Text(
-          '${User().email}',
+          '${CacheHelper.getData("usermail")}',
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Color(0x9906004E),
