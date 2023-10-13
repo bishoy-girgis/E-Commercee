@@ -104,7 +104,7 @@ class HomeCubit extends Cubit<HomeStates> {
     GetWishListUseCase getWishListUseCase = GetWishListUseCase(homeRepository);
     var result = await getWishListUseCase.execute();
     result.fold((l) {
-      print(l.statusCode);
+      print(l.message);
       emit(GetWishListErrorState(l));
     }, (data) {
       wishListProduct = data.data ?? [];

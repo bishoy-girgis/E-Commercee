@@ -4,5 +4,4 @@ class PageRouteName {
   static const signUp="signUp";
   static const home="home";
   static const productDetails="product details";
-  static const cart="cart";
 }

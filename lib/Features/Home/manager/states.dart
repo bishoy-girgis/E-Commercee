@@ -1,8 +1,4 @@
-import 'package:e_commerce_app/Data/models/home/cart_response_model.dart';
-import 'package:e_commerce_app/Domain/entity/home/add_wishlist_entity.dart';
 import 'package:e_commerce_app/Domain/entity/home/category_entity.dart';
-import 'package:e_commerce_app/Domain/entity/home/delete_wishlist_entity.dart';
-import 'package:e_commerce_app/Domain/entity/home/get_wishlist_entity.dart';
 import 'package:e_commerce_app/Domain/entity/home/product_entity.dart';
 
 import '../../../Core/error/faliure.dart';
@@ -48,62 +44,29 @@ class HomeGetCategoryErrorState extends HomeStates {
 
   HomeGetCategoryErrorState(this.failure);
 }
-
 class ChangeCurrentIndexState extends HomeStates {}
 
-class AddToCartLoadingState extends HomeStates {}
-
-class AddToCartErrorState extends HomeStates {
-  Failure failure;
-
-  AddToCartErrorState(this.failure);
-}
-
-class AddToCartSuccessState extends HomeStates {
-  CartResponseModel model;
-
-  AddToCartSuccessState(this.model);
-}
-
-
-class AddToWishListLoadingState extends HomeStates {}
-class AddToWishListErrorState extends HomeStates {
-  Failure failure;
-
-  AddToWishListErrorState(this.failure);
-}
-
-class AddToWishListSuccessState extends HomeStates {
-  AddWishlistEntity model;
-
-  AddToWishListSuccessState(this.model);
-}
-
-
-class GetWishListLoadingState extends HomeStates {}
-class GetWishListErrorState extends HomeStates {
-  Failure failure;
-
-  GetWishListErrorState(this.failure);
-}
-
-class GetWishListSuccessState extends HomeStates {
-  GetWishlistEntity model;
-
-  GetWishListSuccessState(this.model);
-}
-
-
-
-class DeleteWishListLoadingState extends HomeStates {}
-class DeleteWishListErrorState extends HomeStates {
-  Failure failure;
-
-  DeleteWishListErrorState(this.failure);
-}
-
-class DeleteWishListSuccessState extends HomeStates {
-  DeleteWishlistEntity model;
-
-  DeleteWishListSuccessState(this.model);
-}
+//
+//
+// class HomeSuccessState extends HomeStates {}
+//
+// class HomeErrorState extends HomeStates {
+//   Failure failure;
+//
+//   HomeErrorState(this.failure);
+// }
+//class ChangeCurrentIndexState extends HomeStates {}
+//
+// class GetCategoryLoadingState extends HomeStates {}
+//
+// class GetCategorySuccessState extends HomeStates {
+//   final List<CategoryOrBrandEntity> categoriesList;
+//
+//   GetCategorySuccessState(this.categoriesList);
+// }
+//
+// class GetCategoryErrorState extends HomeStates {
+//   Failure failure;
+//
+//   GetCategoryErrorState(this.failure);
+// }

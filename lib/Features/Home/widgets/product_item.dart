@@ -1,6 +1,5 @@
 import 'package:e_commerce_app/Core/extentions/extentions.dart';
 import 'package:e_commerce_app/Domain/entity/home/product_entity.dart';
-import 'package:e_commerce_app/Features/Home/manager/cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -79,9 +78,7 @@ class ProductItem extends StatelessWidget {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: IconButton(
-                      onPressed: () {
-                        HomeCubit.get(context).addToCart(product.id ?? "");
-                      },
+                      onPressed: () {},
                       icon: const Icon(Icons.add_circle),
                       color: theme.primaryColor,
                       iconSize: 30,
@@ -94,12 +91,9 @@ class ProductItem extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: InkWell(
-              onTap: () {
-                HomeCubit.get(context).addToWishList(product.id ??"");
-
-              },
+              onTap: () {},
               child: Image(
-                image: const AssetImage("assets/images/icons/select_fav.png"),
+                image: AssetImage("assets/images/icons/select_fav.png"),
                 width: mq.width * 0.1,
                 height: mq.height * 0.1,
               ),

@@ -8,8 +8,6 @@ import 'package:e_commerce_app/Features/signup/pages/signup_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../Features/Cart/pages/cart_view.dart';
-
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
@@ -30,9 +28,6 @@ class Routes {
         return MaterialPageRoute(
             builder: (context) => ProductDetailsView(product),
             settings: routeSettings);
-      case PageRouteName.cart:
-        return MaterialPageRoute(
-            builder: (context) => const CartView(), settings: routeSettings);
       default:
         return MaterialPageRoute<dynamic>(
             builder: (context) => const SplashView(), settings: routeSettings);
