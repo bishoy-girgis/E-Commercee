@@ -154,7 +154,9 @@ class _LoginViewState extends State<LoginView> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, PageRouteName.forgotPassword);
+                          },
                           child: Text(
                             "Forgot password",
                             style: theme.textTheme.bodySmall,
@@ -198,76 +200,5 @@ class _LoginViewState extends State<LoginView> {
         },
       ),
     );
-    // return Scaffold(
-    //   body: SingleChildScrollView(
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.stretch,
-    //       children: [
-    //         Image.asset(
-    //           "assets/images/logos/route_logo.png",
-    //           scale: 1.2,
-    //         ),
-    //         Text("Welcome Back To Route ",
-    //             style: theme.textTheme.headlineMedium).setOnlyVerticalPadding(context,top: 0.02 ),
-    //         Text(
-    //           "Please sign in with your mail",
-    //           style: theme.textTheme.bodySmall,
-    //         ).setOnlyVerticalPadding(context, bottom: 0.03, top: 0.002),
-    //         Text(
-    //           "User name",
-    //           style: theme.textTheme.bodyMedium,
-    //         ),
-    //         const CustomTextField(
-    //           hint: "enter your user name",
-    //           //controller: cubit.nameController,
-    //         ).setOnlyVerticalPadding(context, top: 0.01, bottom: 0.03),
-    //         Text(
-    //           "Password",
-    //           style: theme.textTheme.bodyMedium,
-    //         ),
-    //         const CustomTextField(
-    //           hint: "enter your password",
-    //           //controller: cubit.passwordController,
-    //           isPassword: true,
-    //         ).setOnlyVerticalPadding(context, top: 0.01),
-    //         Align(
-    //           alignment: Alignment.centerRight,
-    //           child: TextButton(
-    //               onPressed: () {},
-    //               child: Text(
-    //                 "Forgot password",
-    //                 style: theme.textTheme.bodySmall,
-    //               )).setOnlyVerticalPadding(context, bottom: 0.15),
-    //         ),
-    //         TextButton(
-    //           onPressed: () {
-    //             //cubit.signUp();
-    //           },
-    //           style: ButtonStyle(
-    //             backgroundColor: MaterialStatePropertyAll(theme.primaryColor),
-    //             padding: const MaterialStatePropertyAll(EdgeInsets.all(14)),
-    //             shape: MaterialStatePropertyAll(
-    //               RoundedRectangleBorder(
-    //                 borderRadius: BorderRadius.circular(25),
-    //               ),
-    //             ),
-    //           ),
-    //           child: Text("Login", style: theme.textTheme.bodyLarge),
-    //         ),
-    //         TextButton(
-    //             onPressed: () {
-    //               navigatorKey.currentState
-    //                   ?.pushReplacementNamed(PageRouteName.signUp);
-    //             },
-    //             child: Text(
-    //               "Don’t have an account? Create Account",
-    //               style: theme.textTheme.bodySmall,
-    //             )).setOnlyVerticalPadding(context,top: 0.01)
-    //       ],
-    //     )
-    //         .setOnlyVerticalPadding(context, top: 0.1)
-    //         .setHorizontalPadding(context, 0.04),
-    //   ),
-    // );
   }
 }

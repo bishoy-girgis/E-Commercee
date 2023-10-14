@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app/Data/data_sources/login/login_datasource.dart';
+import 'package:e_commerce_app/Data/models/login/forgot_password_model.dart';
 import 'package:e_commerce_app/Domain/repositries/login/login_repository.dart';
 
 import '../../../Core/error/faliure.dart';
@@ -42,6 +43,26 @@ class LoginRepositoryImp implements LoginRepository {
           message: error.response?.data["errors"]["msg"],
         ));
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, ForgotPasswordModel>> forgotPassword(
+      String email) async {
+    try {
+      var result = await loginDataSource.forgotPassword(email);
+
+      ForgotPasswordModel user = ForgotPasswordModel.fromJson(result.data);
+      return Right(user);
+    } catch (e) {
+      DioException error = e as DioException;
+
+      return left(
+        ServerFailure(
+          statusCode: error.response?.statusCode.toString() ?? "",
+          message: error.response?.data["message"],
+        ),
+      );
     }
   }
 }

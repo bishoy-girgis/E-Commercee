@@ -37,7 +37,7 @@ class SignUpRepositoryImp implements SignUpRepository {
     } catch (e) {
       DioException error = e as DioException;
 
-      if (error.response?.statusCode == 401) {
+      if (error.response?.statusCode == 409) {
         return left(
           ServerFailure(
             statusCode: error.response?.statusCode.toString() ?? "",

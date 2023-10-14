@@ -5,4 +5,6 @@ class PageRouteName {
   static const home="home";
   static const productDetails="product details";
   static const cart="cart";
+  static const forgotPassword="forgot password";
+  static const verify="verify";
 }

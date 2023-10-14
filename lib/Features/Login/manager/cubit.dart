@@ -3,6 +3,7 @@ import 'package:e_commerce_app/Core/services/web_service.dart';
 import 'package:e_commerce_app/Data/data_sources/login/login_datasource.dart';
 import 'package:e_commerce_app/Data/repository_imp/login/login_repository_imp.dart';
 import 'package:e_commerce_app/Domain/repositries/login/login_repository.dart';
+import 'package:e_commerce_app/Domain/usecase/login/forgot_password-usecase.dart';
 import 'package:e_commerce_app/Domain/usecase/login/login_usecase.dart';
 import 'package:e_commerce_app/Features/Login/manager/states.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +16,7 @@ class LoginCubit extends Cubit<LoginStates> {
   late LoginDataSource loginDataSource;
   late LoginRepository loginRepository;
   late LoginUseCase loginUseCase;
+  late ForgotPasswordUseCase forgotPasswordUseCase;
 
   LoginCubit get(context) => BlocProvider.of(context);
 
@@ -42,4 +44,7 @@ class LoginCubit extends Cubit<LoginStates> {
       },
     );
   }
+
+
+
 }

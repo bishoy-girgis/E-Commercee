@@ -11,4 +11,10 @@ class LoginDataSource {
       "password": password,
     });
   }
+
+  Future<Response> forgotPassword(String email) {
+    return dio.post("/api/v1/auth/forgotPasswords", data: {
+      "email": email,
+    });
+  }
 }

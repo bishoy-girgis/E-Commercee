@@ -7,8 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../Home/manager/cubit.dart';
+import '../widgets/add_to cart.dart';
+import '../widgets/color_and_size.dart';
+import '../widgets/product_title_with_image.dart';
 
 class ProductDetailsView extends StatefulWidget {
   ProductDataEntity product;
@@ -39,214 +43,360 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       child: BlocConsumer<HomeCubit, HomeStates>(
         builder: (context, state) {
           return Scaffold(
+            // each product have a color
+            backgroundColor: theme.primaryColor,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
               centerTitle: true,
-              iconTheme: IconThemeData(color: theme.primaryColor),
+              iconTheme: IconThemeData(color: Colors.white),
               title: Text("Product Details",
-                  style: theme.textTheme.bodyLarge
-                      ?.copyWith(color: theme.primaryColor)),
+                  style:
+                      theme.textTheme.bodyLarge?.copyWith(color: Colors.white)),
             ),
             body: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ImageSlideshow(
-                    width: double.infinity,
-                    height: mediaQuery.height * 0.4,
-                    initialPage: 0,
-                    indicatorColor: theme.primaryColor,
-                    indicatorBackgroundColor: Colors.grey,
-                    indicatorPadding: 8,
-                    indicatorBottomPadding: 10,
-                    indicatorRadius: 5,
-                    autoPlayInterval: 3000,
-                    isLoop: true,
-                    children: widget.product.images?.map((imageUrl) {
-                          return Image.network(
-                              imageUrl); // Convert URL to Image widget
-                        }).toList() ??
-                        [],
-                  ).setVerticalPadding(context, 0.013),
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
                   SizedBox(
-                    height: mediaQuery.height * 0.01,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: mediaQuery.width * 0.6,
-                        child: Text(
-                          widget.product.title ?? "",
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodyMedium,
-                        ),
-                      ),
-                      Text(
-                        "EGP  ${widget.product.price}",
-                        style: theme.textTheme.bodyMedium,
-                      )
-                    ],
-                  ).setVerticalPadding(context, 0.02),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(35),
-                              border:
-                                  Border.all(color: Colors.blueGrey, width: 1)),
-                          child: Text(
-                            " ${widget.product.sold} Sold",
-                            style: theme.textTheme.bodySmall,
+                    height: mediaQuery.height,
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          margin:
+                              EdgeInsets.only(top: mediaQuery.height * 0.35),
+                          padding: EdgeInsets.only(
+                            top: mediaQuery.height * 0.08,
+                            left: 20,
+                            right: 20,
                           ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            const SizedBox(
-                              width: 13,
+                          height: mediaQuery.height,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24),
                             ),
-                            const ImageIcon(
-                                AssetImage("assets/images/icons/star.png"),
-                                size: 17,
-                                color: Color(0XFFFDD835)),
-                            Text(
-                              widget.product.ratingsAverage.toString(),
-                              style: theme.textTheme.displaySmall,
+                          ),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Total price",
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: const Color(0xFF6A6695)),
+                                ),
+                                Text(
+                                  "EGP ${widget.product.price}",
+                                  style: theme.textTheme.headlineMedium,
+                                ),
+                                SizedBox(height: 10.h),
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(35),
+                                          border: Border.all(
+                                              color: Colors.blueGrey,
+                                              width: 1)),
+                                      child: Text(
+                                        " ${widget.product.sold} Sold",
+                                        style: theme.textTheme.bodySmall,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 38.w,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const ImageIcon(
+                                            AssetImage(
+                                                "assets/images/icons/star.png"),
+                                            size: 17,
+                                            color: Color(0XFFFDD835)),
+                                        Text(
+                                          widget.product.ratingsAverage
+                                              .toString(),
+                                          style: theme.textTheme.displaySmall,
+                                        ),
+                                        Text(
+                                          " (${widget.product.ratingsQuantity})",
+                                          style: theme.textTheme.displaySmall,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 38.w,
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(7),
+                                      decoration: BoxDecoration(
+                                          color: theme.primaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(35),
+                                          border: Border.all(
+                                              color: Colors.blueGrey,
+                                              width: 1)),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                              CupertinoIcons.minus_circle,
+                                              color: Colors.white),
+                                          const SizedBox(
+                                            width: 15,
+                                          ),
+                                          Text("1",
+                                              style: theme.textTheme.bodyLarge),
+                                          const SizedBox(
+                                            width: 15,
+                                          ),
+                                          const Icon(
+                                            CupertinoIcons.add_circled,
+                                            color: Colors.white,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10.h),
+                                const ColorAndSize(),
+                                SizedBox(height: 10.h),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Text(
+                                    widget.product.description ?? "",
+                                    style: const TextStyle(height: 1.5),
+                                  ),
+                                ),
+                                SizedBox(height: 10.h),
+                                AddToCart(widget.product)
+                              ],
                             ),
-                            Text(
-                              " (${widget.product.ratingsQuantity})",
-                              style: theme.textTheme.displaySmall,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                              color: theme.primaryColor,
-                              borderRadius: BorderRadius.circular(35),
-                              border:
-                                  Border.all(color: Colors.blueGrey, width: 1)),
-                          child: Row(
-                            children: [
-                              const Icon(CupertinoIcons.minus_circle,
-                                  color: Colors.white),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              Text("1", style: theme.textTheme.bodyLarge),
-                              const SizedBox(
-                                width: 15,
-                              ),
-                              const Icon(
-                                CupertinoIcons.add_circled,
-                                color: Colors.white,
-                              )
-                            ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    "Description",
-                    style: theme.textTheme.bodyMedium,
-                    textAlign: TextAlign.left,
-                  ).setVerticalPadding(context, 0.015),
-                  Text(
-                    "Title : ${widget.product.title} \n",
-                    style: theme.textTheme.displaySmall
-                        ?.copyWith(color: Colors.blueGrey),
-                    maxLines: 8,
-                  ),
-                  Text(
-                    "Description : ${widget.product.description}\n",
-                    style: theme.textTheme.displaySmall
-                        ?.copyWith(color: Colors.blueGrey),
-                    maxLines: 8,
-                  ),
-                  Text(
-                    "Color",
-                    style: theme.textTheme.bodyMedium,
-                  ).setVerticalPadding(context, 0.02),
-                  Row(
-                    children: [
-                      for (int index = 0; index < colors.length; index++)
-                        ProductColor(
-                          color: colors[index],
-                          select: index == selectedColorIndex,
-                          onColorSelected: (isSelected) {
-                            setState(() {
-                              if (isSelected) {
-                                selectedColorIndex = index;
-                              } else {
-                                selectedColorIndex = -1;
-                              }
-                            });
-                          },
-                        ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            "Total price",
-                            style: theme.textTheme.bodyMedium
-                                ?.copyWith(color: const Color(0xFF6A6695)),
-                          ),
-                          Text(
-                            "EGP ${widget.product.price}",
-                            style: theme.textTheme.bodyMedium,
-                          )
-                        ],
-                      ),
-                      InkWell(
-                        onTap: () {
-                          HomeCubit.get(context)
-                              .addToCart(widget.product.id ?? "");
-                        },
-                        child: Container(
-                          width: mediaQuery.width * 0.6,
-                          height: mediaQuery.height * 0.07,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: theme.primaryColor),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.add_shopping_cart_outlined,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                              SizedBox(
-                                width: mediaQuery.width * 0.03,
-                              ),
-                              Text(
-                                "Add to cart",
-                                style: theme.textTheme.bodyLarge,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ).setOnlyVerticalPadding(context, top: 0.02, bottom: 0.01)
+                        ProductTitleWithImage(product: widget.product)
+                      ],
+                    ),
+                  )
                 ],
-              )
-                  .setHorizontalPadding(context, 0.07)
-                  .setOnlyVerticalPadding(context, bottom: 0.04, top: 0.01),
+              ),
             ),
           );
+          //   Scaffold(
+          //   appBar: AppBar(
+          //     backgroundColor: Colors.transparent,
+          //     elevation: 0,
+          //     centerTitle: true,
+          //     iconTheme: IconThemeData(color: theme.primaryColor),
+          //     title: Text("Product Details",
+          //         style: theme.textTheme.bodyLarge
+          //             ?.copyWith(color: theme.primaryColor)),
+          //   ),
+          //   body: SingleChildScrollView(
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         ImageSlideshow(
+          //           width: double.infinity,
+          //           height: mediaQuery.height * 0.4,
+          //           initialPage: 0,
+          //           indicatorColor: theme.primaryColor,
+          //           indicatorBackgroundColor: Colors.grey,
+          //           indicatorPadding: 8,
+          //           indicatorBottomPadding: 10,
+          //           indicatorRadius: 5,
+          //           autoPlayInterval: 3000,
+          //           isLoop: true,
+          //           children: widget.product.images?.map((imageUrl) {
+          //                 return Image.network(
+          //                     imageUrl); // Convert URL to Image widget
+          //               }).toList() ??
+          //               [],
+          //         ).setVerticalPadding(context, 0.013),
+          //         SizedBox(
+          //           height: mediaQuery.height * 0.01,
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: [
+          //             SizedBox(
+          //               width: mediaQuery.width * 0.6,
+          //               child: Text(
+          //                 widget.product.title ?? "",
+          //                 overflow: TextOverflow.ellipsis,
+          //                 style: theme.textTheme.bodyMedium,
+          //               ),
+          //             ),
+          //             Text(
+          //               "EGP  ${widget.product.price}",
+          //               style: theme.textTheme.bodyMedium,
+          //             )
+          //           ],
+          //         ).setVerticalPadding(context, 0.02),
+          //         Row(
+          //           children: [
+          //             Expanded(
+          //               child: Container(
+          //                 padding: const EdgeInsets.all(10),
+          //                 decoration: BoxDecoration(
+          //                     borderRadius: BorderRadius.circular(35),
+          //                     border:
+          //                         Border.all(color: Colors.blueGrey, width: 1)),
+          //                 child: Text(
+          //                   " ${widget.product.sold} Sold",
+          //                   style: theme.textTheme.bodySmall,
+          //                 ),
+          //               ),
+          //             ),
+          //             Expanded(
+          //               child: Row(
+          //                 children: [
+          //                   const SizedBox(
+          //                     width: 13,
+          //                   ),
+          //                   const ImageIcon(
+          //                       AssetImage("assets/images/icons/star.png"),
+          //                       size: 17,
+          //                       color: Color(0XFFFDD835)),
+          //                   Text(
+          //                     widget.product.ratingsAverage.toString(),
+          //                     style: theme.textTheme.displaySmall,
+          //                   ),
+          //                   Text(
+          //                     " (${widget.product.ratingsQuantity})",
+          //                     style: theme.textTheme.displaySmall,
+          //                   ),
+          //                 ],
+          //               ),
+          //             ),
+          //             Expanded(
+          //               child: Container(
+          //                 padding: const EdgeInsets.all(12),
+          //                 decoration: BoxDecoration(
+          //                     color: theme.primaryColor,
+          //                     borderRadius: BorderRadius.circular(35),
+          //                     border:
+          //                         Border.all(color: Colors.blueGrey, width: 1)),
+          //                 child: Row(
+          //                   children: [
+          //                     const Icon(CupertinoIcons.minus_circle,
+          //                         color: Colors.white),
+          //                     const SizedBox(
+          //                       width: 15,
+          //                     ),
+          //                     Text("1", style: theme.textTheme.bodyLarge),
+          //                     const SizedBox(
+          //                       width: 15,
+          //                     ),
+          //                     const Icon(
+          //                       CupertinoIcons.add_circled,
+          //                       color: Colors.white,
+          //                     )
+          //                   ],
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         Text(
+          //           "Description",
+          //           style: theme.textTheme.bodyMedium,
+          //           textAlign: TextAlign.left,
+          //         ).setVerticalPadding(context, 0.015),
+          //         Text(
+          //           "${widget.product.title} \n",
+          //           style: theme.textTheme.displaySmall
+          //               ?.copyWith(color: Colors.blueGrey),
+          //           maxLines: 8,
+          //         ),
+          //         Text(
+          //           "${widget.product.description}\n",
+          //           style: theme.textTheme.displaySmall
+          //               ?.copyWith(color: Colors.blueGrey),
+          //           maxLines: 8,
+          //         ),
+          //         Text(
+          //           "Color",
+          //           style: theme.textTheme.bodyMedium,
+          //         ).setVerticalPadding(context, 0.02),
+          //         Row(
+          //           children: [
+          //             for (int index = 0; index < colors.length; index++)
+          //               ProductColor(
+          //                 color: colors[index],
+          //                 select: index == selectedColorIndex,
+          //                 onColorSelected: (isSelected) {
+          //                   setState(() {
+          //                     if (isSelected) {
+          //                       selectedColorIndex = index;
+          //                     } else {
+          //                       selectedColorIndex = -1;
+          //                     }
+          //                   });
+          //                 },
+          //               ),
+          //           ],
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           children: [
+          //             Column(
+          //               children: [
+          //                 Text(
+          //                   "Total price",
+          //                   style: theme.textTheme.bodyMedium
+          //                       ?.copyWith(color: const Color(0xFF6A6695)),
+          //                 ),
+          //                 Text(
+          //                   "EGP ${widget.product.price}",
+          //                   style: theme.textTheme.bodyMedium,
+          //                 )
+          //               ],
+          //             ),
+          //             InkWell(
+          //               onTap: () {
+          //                 HomeCubit.get(context)
+          //                     .addToCart(widget.product.id ?? "");
+          //               },
+          //               child: Container(
+          //                 width: mediaQuery.width * 0.6,
+          //                 height: mediaQuery.height * 0.07,
+          //                 decoration: BoxDecoration(
+          //                     borderRadius: BorderRadius.circular(30),
+          //                     color: theme.primaryColor),
+          //                 child: Row(
+          //                   mainAxisAlignment: MainAxisAlignment.center,
+          //                   children: [
+          //                     const Icon(
+          //                       Icons.add_shopping_cart_outlined,
+          //                       color: Colors.white,
+          //                       size: 25,
+          //                     ),
+          //                     SizedBox(
+          //                       width: mediaQuery.width * 0.03,
+          //                     ),
+          //                     Text(
+          //                       "Add to cart",
+          //                       style: theme.textTheme.bodyLarge,
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ).setOnlyVerticalPadding(context, top: 0.02, bottom: 0.01)
+          //       ],
+          //     )
+          //         .setHorizontalPadding(context, 0.07)
+          //         .setOnlyVerticalPadding(context, bottom: 0.04, top: 0.01),
+          //   ),
+          // );
         },
         listener: (context, state) {},
       ),
