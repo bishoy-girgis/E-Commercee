@@ -4,6 +4,9 @@ import 'package:e_commerce_app/Core/services/cache_helper.dart';
 import 'package:e_commerce_app/Core/services/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../Core/widgets/custom_textfield.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -18,16 +21,6 @@ class ProfileView extends StatelessWidget {
           "Welcome, ${CacheHelper.getData("username")}",
           style: theme.textTheme.bodyMedium,
         ),
-        Text(
-          '${CacheHelper.getData("usermail")}',
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Color(0x9906004E),
-            fontSize: 14,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-          ),
-        ),
         ElevatedButton(
           onPressed: () {
             CacheHelper.removeData("user");
@@ -36,8 +29,8 @@ class ProfileView extends StatelessWidget {
             Navigator.pushNamedAndRemoveUntil(
                 context, PageRouteName.login, (route) => false);
           },
-          style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(theme.primaryColor)),
+          style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(Colors.blueGrey)),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: const [
@@ -46,6 +39,32 @@ class ProfileView extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(
+          height: 25.h,
+        ),
+        Text(
+          "Your full name",
+          style: theme.textTheme.bodyMedium,
+        ),
+        CustomTextField(
+          hint: "enter your user name",
+          controller:
+              TextEditingController(text: "${CacheHelper.getData("username")}"),
+        ).setOnlyVerticalPadding(context,
+            top: 0.01, bottom: 0.03, left: 0.01, right: 0.01),
+        SizedBox(
+          height: 25.h,
+        ),
+        Text(
+          "Your Email Address",
+          style: theme.textTheme.bodyMedium,
+        ),
+        CustomTextField(
+          hint: "enter your user name",
+          controller:
+          TextEditingController(text: "${CacheHelper.getData("usermail")}"),
+        ).setOnlyVerticalPadding(context,
+            top: 0.01, bottom: 0.03, left: 0.01, right: 0.01),
       ],
     ).setHorizontalPadding(context, 0.03);
   }

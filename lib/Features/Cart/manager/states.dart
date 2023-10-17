@@ -1,5 +1,3 @@
-import 'package:e_commerce_app/Data/models/home/cart_response_model.dart';
-
 import '../../../Core/error/faliure.dart';
 import '../../../Data/models/cart/get_cart_model.dart';
 
@@ -32,6 +30,7 @@ class DeleteItemCartSuccessState extends CartStates {
 
   DeleteItemCartSuccessState(this.getCartModel);
 }
+
 class UpdateItemCartErrorState extends CartStates {
   Failure failure;
 
@@ -43,3 +42,12 @@ class UpdateItemCartSuccessState extends CartStates {
 
   UpdateItemCartSuccessState(this.getCartModel);
 }
+class ClearCartLoadingState extends CartStates {}
+
+class ClearCartErrorState extends CartStates {
+  Failure failure;
+
+  ClearCartErrorState(this.failure);
+}
+
+class ClearCartSuccessState extends CartStates {}

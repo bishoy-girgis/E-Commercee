@@ -86,6 +86,7 @@ class _SignUpViewState extends State<SignUpView> {
             CacheHelper.saveData(key: "user", value: state.signUpEntity.token);
             CacheHelper.saveData(key: "username", value: state.signUpEntity.userName);
             CacheHelper.saveData(key: "usermail", value: state.signUpEntity.userEmail);
+            CacheHelper.saveData(key: "userphone", value: SignUpCubit().get(context).phoneController.toString());
             navigatorKey.currentState?.pushNamedAndRemoveUntil(PageRouteName.home, (route) => false);
           }
         },

@@ -1,8 +1,10 @@
+import 'package:e_commerce_app/Core/config/page_route_name.dart';
 import 'package:e_commerce_app/Core/extentions/extentions.dart';
 import 'package:e_commerce_app/Data/data_sources/cart/cart_data_source.dart';
 import 'package:e_commerce_app/Features/Cart/manager/cubit.dart';
 import 'package:e_commerce_app/Features/Cart/manager/states.dart';
 import 'package:e_commerce_app/Features/Cart/widgets/cart_item.dart';
+import 'package:e_commerce_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +23,11 @@ class CartView extends StatelessWidget {
           if (state is CartSuccessState) {
             return Scaffold(
               appBar: AppBar(
+                // actions: [
+                //   IconButton(onPressed: () {
+                //
+                //   }, icon: const Icon(Icons.delete,color: Colors.blueGrey,size: 25,))
+                // ],
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: true,
@@ -61,22 +68,27 @@ class CartView extends StatelessWidget {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: theme.primaryColor),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Check Out",
-                              style: theme.textTheme.bodyLarge,
-                            ),
-                            SizedBox(
-                              width: mediaQuery.width * 0.03,
-                            ),
-                            const Icon(
-                              Icons.arrow_right_alt_outlined,
-                              color: Colors.white,
-                              size: 25,
-                            )
-                          ],
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, PageRouteName.payment,arguments: state.getCartModel);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Check Out",
+                                style: theme.textTheme.bodyLarge,
+                              ),
+                              SizedBox(
+                                width: mediaQuery.width * 0.03,
+                              ),
+                              const Icon(
+                                Icons.arrow_right_alt_outlined,
+                                color: Colors.white,
+                                size: 25,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ],

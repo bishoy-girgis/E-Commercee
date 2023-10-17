@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/Data/repository_imp/cart/cart_repository_imp.dart';
 import 'package:e_commerce_app/Domain/repositries/cart/cart_repositorty.dart';
+import 'package:e_commerce_app/Domain/usecase/cart/clear_cart_usecase.dart';
 import 'package:e_commerce_app/Domain/usecase/cart/delete_item_from_cart_usecase.dart';
 import 'package:e_commerce_app/Domain/usecase/cart/get_cart_usecase.dart';
 import 'package:e_commerce_app/Domain/usecase/cart/update_cart_usecase.dart';
@@ -51,6 +52,19 @@ class CartCubit extends Cubit<CartStates> {
       emit(UpdateItemCartErrorState(l));
     }, (r) {
       emit(CartSuccessState(r));
+    });
+  }
+
+  clearCart() async {
+    emit(ClearCartLoadingState());
+    CartRepository cartRepository = CartRepositoryImp(cartDataSource);
+    ClearCartUseCase clearCartUseCase = ClearCartUseCase(cartRepository);
+    var result = await clearCartUseCase.execute();
+
+    result.fold((l) {
+      emit(ClearCartErrorState(l));
+    }, (r) {
+      emit(ClearCartSuccessState());
     });
   }
 }

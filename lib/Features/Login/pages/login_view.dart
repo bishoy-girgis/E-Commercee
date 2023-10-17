@@ -4,6 +4,7 @@ import 'package:e_commerce_app/Features/Login/manager/cubit.dart';
 import 'package:e_commerce_app/Features/Login/manager/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../Core/config/page_route_name.dart';
 import '../../../Core/constants/constants.dart';
 import '../../../Core/services/web_service.dart';
@@ -77,23 +78,34 @@ class _LoginViewState extends State<LoginView> {
             CacheHelper.saveData(key: "user", value: state.user.token);
             CacheHelper.saveData(key: "username", value: state.user.userName);
             CacheHelper.saveData(key: "usermail", value: state.user.email);
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.white,
-                elevation: 0.0,
-                title: Text(state.user.token ?? ""),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      navigatorKey.currentState?.pushNamedAndRemoveUntil(
-                          PageRouteName.home, (route) => false);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              ),
+            Fluttertoast.showToast(
+                msg: "Login Successfully",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 2,
+                backgroundColor: Theme.of(context).primaryColor,
+                textColor: Colors.white,
+                fontSize: 16.0
             );
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+                PageRouteName.home, (route) => false);
+            // showDialog(
+            //   context: context,
+            //   builder: (context) => AlertDialog(
+            //     backgroundColor: Colors.white,
+            //     elevation: 0.0,
+            //     title: const Text("Login Successfully"),
+            //     actions: <Widget>[
+            //       TextButton(
+            //         onPressed: () {
+            //           navigatorKey.currentState?.pushNamedAndRemoveUntil(
+            //               PageRouteName.home, (route) => false);
+            //         },
+            //         child: const Text('OK'),
+            //       ),
+            //     ],
+            //   ),
+            // );
           }
         },
         builder: (context, state) {

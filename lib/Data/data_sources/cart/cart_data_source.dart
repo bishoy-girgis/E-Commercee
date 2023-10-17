@@ -5,10 +5,12 @@ import 'package:e_commerce_app/Data/models/home/cart_response_model.dart';
 import '../../../Core/constants/constants.dart';
 import '../../../Core/error/faliure.dart';
 import '../../../Core/services/cache_helper.dart';
+import '../../models/cart/clear_cart_model.dart';
 import '../../models/cart/get_cart_model.dart';
 
 abstract class CartDataSource {
   Future<Either<Failure, GetCartModel>> getCart();
+  Future<Either<Failure, ClearCartModel>> clearCart();
 
   Future<Either<Failure, GetCartModel>> deleteItemFromCart(String id);
 
@@ -69,6 +71,22 @@ class CartRemoteDto implements CartDataSource {
       return left(ServerFailure(statusCode: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, ClearCartModel>> clearCart() async{
+    try {
+      var response = await dio.delete(
+        "${Constants.baseUrl}/api/v1/cart",
+        options: Options(
+          headers: {"token": userToken},
+        ),
+      );
+      ClearCartModel model = ClearCartModel.fromJson(response.data);
+      return Right(model);
+    } catch (e) {
+      return left(ServerFailure(statusCode: e.toString()));
+    }
+  }
 }
 
 class CartLocalDto implements CartDataSource {
@@ -88,6 +106,12 @@ class CartLocalDto implements CartDataSource {
   Future<Either<Failure, GetCartModel>> updateItemFromCart(
       String id, int count) {
     // TODO: implement updateItemFromCart
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, ClearCartModel>> clearCart() {
+    // TODO: implement clearCart
     throw UnimplementedError();
   }
 }

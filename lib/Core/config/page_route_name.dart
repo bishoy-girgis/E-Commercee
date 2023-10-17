@@ -7,4 +7,6 @@ class PageRouteName {
   static const cart="cart";
   static const forgotPassword="forgot password";
   static const verify="verify";
+  static const payment="payment";
+  static const webView="webView";
 }
