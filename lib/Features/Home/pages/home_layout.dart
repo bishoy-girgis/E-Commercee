@@ -1,5 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:e_commerce_app/Core/config/page_route_name.dart';
+import 'package:e_commerce_app/Core/extentions/extentions.dart';
+import 'package:e_commerce_app/Core/services/toast.dart';
 import 'package:e_commerce_app/Data/data_sources/home/home_datasource.dart';
 import 'package:e_commerce_app/Features/Home/manager/cubit.dart';
 import 'package:e_commerce_app/Features/Home/manager/states.dart';
@@ -33,23 +35,13 @@ class Homelayout extends StatelessWidget {
               ),
             );
           } else if (state is AddToCartErrorState) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.white,
-                elevation: 0.0,
-                title: Text("Errorrr"),
-                content: Text(state.failure.statusCode ?? ""),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              ),
-            );
+            errorToast(context,description: state.failure.statusCode);
+          }  else if (state is AddToCartSuccessState) {
+            successToast(context,description: "Added To Cart Successfully",title: "Cart");
+          } else if (state is AddToWishListSuccessState) {
+            successToast(context,description: "Added To WishList Successfully",title: "Wishlist");
+          }else if (state is DeleteWishListSuccessState) {
+            successToast(context,description: "Removed From Your WishList",title: "Wishlist");
           }
         },
         builder: (context, state) {
@@ -80,9 +72,12 @@ class Homelayout extends StatelessWidget {
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               centerTitle: false,
-              title: Image.asset(
-                "assets/images/logos/route_logo.png",
-                height: 28,
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  "assets/images/logos/super.png",
+                  height: 24,
+                ),
               ),
             ),
             body: cubit.pages[cubit.currentIndex],

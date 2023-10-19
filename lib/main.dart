@@ -4,6 +4,7 @@ import 'package:e_commerce_app/Core/config/routes.dart';
 import 'package:e_commerce_app/Core/services/loading_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'Core/services/bloc_observer.dart';
@@ -17,7 +18,6 @@ void main() async {
 
   Bloc.observer = MyBlocObserver();
   configLoading();
-
   var user = CacheHelper.getData("user");
   String route;
   if (user == null) {
@@ -25,7 +25,6 @@ void main() async {
   } else {
     route = PageRouteName.home;
   }
-
   runApp(MyApp(route));
 }
 
@@ -42,6 +41,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
+          builder: EasyLoading.init(),
           title: 'Flutter Demo',
           theme: appTheme,
           debugShowCheckedModeBanner: false,

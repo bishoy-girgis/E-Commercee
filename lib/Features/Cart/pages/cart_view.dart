@@ -1,5 +1,6 @@
 import 'package:e_commerce_app/Core/config/page_route_name.dart';
 import 'package:e_commerce_app/Core/extentions/extentions.dart';
+import 'package:e_commerce_app/Core/services/toast.dart';
 import 'package:e_commerce_app/Data/data_sources/cart/cart_data_source.dart';
 import 'package:e_commerce_app/Features/Cart/manager/cubit.dart';
 import 'package:e_commerce_app/Features/Cart/manager/states.dart';
@@ -8,6 +9,7 @@ import 'package:e_commerce_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CartView extends StatelessWidget {
   const CartView({super.key});
@@ -19,15 +21,19 @@ class CartView extends StatelessWidget {
     return BlocProvider(
       create: (context) => CartCubit(CartRemoteDto())..getCart(),
       child: BlocConsumer<CartCubit, CartStates>(
+        listener: (context, state) {
+          if (state is CartLoadingState) {
+            EasyLoading.show();
+          } else if (state is CartErrorState) {
+            EasyLoading.dismiss();
+            errorToast(context, description: state.failure.statusCode);
+          }
+        },
         builder: (context, state) {
           if (state is CartSuccessState) {
+            EasyLoading.dismiss();
             return Scaffold(
               appBar: AppBar(
-                // actions: [
-                //   IconButton(onPressed: () {
-                //
-                //   }, icon: const Icon(Icons.delete,color: Colors.blueGrey,size: 25,))
-                // ],
                 backgroundColor: Colors.transparent,
                 elevation: 0,
                 centerTitle: true,
@@ -39,12 +45,22 @@ class CartView extends StatelessWidget {
               body: Column(
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                        itemBuilder: (context, index) {
-                          return CartItem(
-                              state.getCartModel.data!.products![index]);
-                        },
-                        itemCount: state.getCartModel.numOfCartItems),
+                    child: state.getCartModel.numOfCartItems == 0
+                        ? Center(
+                            child: Text(
+                              "Your Card Is Empty Try to Add new product\n We have New Special Offers ",
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.primaryColor,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        : ListView.builder(
+                            itemBuilder: (context, index) {
+                              return CartItem(
+                                  state.getCartModel.data!.products![index]);
+                            },
+                            itemCount: state.getCartModel.numOfCartItems),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +86,8 @@ class CartView extends StatelessWidget {
                             color: theme.primaryColor),
                         child: InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, PageRouteName.payment,arguments: state.getCartModel);
+                            Navigator.pushNamed(context, PageRouteName.payment,
+                                arguments: state.getCartModel);
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -98,45 +115,12 @@ class CartView extends StatelessWidget {
                 ],
               ),
             );
-          } else {
+          }
+          else {
             return const Scaffold(
               backgroundColor: Colors.white,
               body: Center(
                 child: CircularProgressIndicator(),
-              ),
-            );
-          }
-        },
-        listener: (context, state) {
-          if (state is CartLoadingState) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.transparent,
-                elevation: 0.0,
-                title: Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-            );
-          } else if (state is CartErrorState) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.white,
-                elevation: 0.0,
-                title: Text("Errorrr"),
-                content: Text(state.failure.statusCode ?? ""),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
               ),
             );
           }

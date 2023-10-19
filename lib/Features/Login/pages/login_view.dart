@@ -1,9 +1,12 @@
 import 'package:e_commerce_app/Core/extentions/extentions.dart';
 import 'package:e_commerce_app/Core/services/cache_helper.dart';
+import 'package:e_commerce_app/Core/services/loading_service.dart';
+import 'package:e_commerce_app/Core/services/toast.dart';
 import 'package:e_commerce_app/Features/Login/manager/cubit.dart';
 import 'package:e_commerce_app/Features/Login/manager/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../Core/config/page_route_name.dart';
 import '../../../Core/constants/constants.dart';
@@ -33,6 +36,7 @@ class _LoginViewState extends State<LoginView> {
     loginDataSource = LoginDataSource(webService.publicDio);
     loginRepository = LoginRepositoryImp(loginDataSource);
     loginUseCase = LoginUseCase(loginRepository);
+    EasyLoading.init();
     super.initState();
   }
 
@@ -45,67 +49,18 @@ class _LoginViewState extends State<LoginView> {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginLoadingState) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.transparent,
-                elevation: 0.0,
-                title: Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-            );
+            EasyLoading.show();
           } else if (state is LoginErrorState) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.white,
-                elevation: 0.0,
-                title: Text("Error : ${state.failure.message}"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              ),
-            );
+            EasyLoading.dismiss();
+            errorToast(context,description: "${state.failure.message}");
           } else if (state is LoginSuccessState) {
+            EasyLoading.dismiss();
             CacheHelper.saveData(key: "user", value: state.user.token);
             CacheHelper.saveData(key: "username", value: state.user.userName);
             CacheHelper.saveData(key: "usermail", value: state.user.email);
-            Fluttertoast.showToast(
-                msg: "Login Successfully",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 2,
-                backgroundColor: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
             navigatorKey.currentState?.pushNamedAndRemoveUntil(
                 PageRouteName.home, (route) => false);
-            // showDialog(
-            //   context: context,
-            //   builder: (context) => AlertDialog(
-            //     backgroundColor: Colors.white,
-            //     elevation: 0.0,
-            //     title: const Text("Login Successfully"),
-            //     actions: <Widget>[
-            //       TextButton(
-            //         onPressed: () {
-            //           navigatorKey.currentState?.pushNamedAndRemoveUntil(
-            //               PageRouteName.home, (route) => false);
-            //         },
-            //         child: const Text('OK'),
-            //       ),
-            //     ],
-            //   ),
-            // );
+            successToast(context,description: "Login Successfully",title: "Login");
           }
         },
         builder: (context, state) {
@@ -120,18 +75,24 @@ class _LoginViewState extends State<LoginView> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Image.asset(
-                      "assets/images/logos/route_logo.png",
+                      "assets/images/logos/super.png",
                       scale: 1.2,
                     ),
-                    Text("Welcome Back To Route ",
-                            style: theme.textTheme.headlineMedium)
+                    Row(
+                      children: [
+                        Text("Welcome Back To ",
+                                style: theme.textTheme.headlineMedium),
+                        Text("Super Marko",
+                            style: theme.textTheme.displayMedium?.copyWith(fontSize: 24)),
+                      ],
+                    )
                         .setOnlyVerticalPadding(context, top: 0.02),
                     Text(
                       "Please sign in with your mail",
                       style: theme.textTheme.bodySmall,
                     ).setOnlyVerticalPadding(context, bottom: 0.03, top: 0.002),
                     Text(
-                      "User name",
+                      "Email Address",
                       style: theme.textTheme.bodyMedium,
                     ),
                     CustomTextField(

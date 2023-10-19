@@ -44,11 +44,6 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                 ),
-                Icon(
-                  CupertinoIcons.cart,
-                  color: theme.primaryColor,
-                  size: 30,
-                ).setHorizontalPadding(context, 0.018)
               ],
             ),
             ImageSlideshow(
@@ -69,12 +64,12 @@ class HomeView extends StatelessWidget {
               children: [
                 Text(
                   "Categories",
-                  style: theme.textTheme.bodyMedium,
+                  style: theme.textTheme.bodyMedium?.copyWith(color: theme.primaryColor),
                 ),
-                Text(
-                  "View all",
-                  style: theme.textTheme.displaySmall,
-                ),
+                // Text(
+                //   "View all",
+                //   style: theme.textTheme.displaySmall,
+                // ),
               ],
             ),
             const SizedBox(
@@ -111,7 +106,7 @@ class HomeView extends StatelessWidget {
             ),
             Text(
               "Brands",
-              style: theme.textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium?.copyWith(color: theme.primaryColor),
             ),
             const SizedBox(
               height: 10,

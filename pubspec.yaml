@@ -50,6 +50,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   fluttertoast: ^8.2.2
   webview_flutter: ^4.2.2
+  motion_toast: ^2.7.9
 
 dev_dependencies:
   flutter_test:

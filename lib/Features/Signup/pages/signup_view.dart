@@ -1,6 +1,7 @@
 import 'package:e_commerce_app/Core/config/page_route_name.dart';
 import 'package:e_commerce_app/Core/constants/constants.dart';
 import 'package:e_commerce_app/Core/extentions/extentions.dart';
+import 'package:e_commerce_app/Core/services/toast.dart';
 import 'package:e_commerce_app/Core/services/web_service.dart';
 import 'package:e_commerce_app/Core/widgets/custom_textfield.dart';
 import 'package:e_commerce_app/Data/data_sources/signup/signup_datasource.dart';
@@ -13,6 +14,7 @@ import 'package:e_commerce_app/Features/signup/manager/states.dart';
 import 'package:e_commerce_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../Core/services/cache_helper.dart';
 
@@ -53,41 +55,46 @@ class _SignUpViewState extends State<SignUpView> {
       child: BlocConsumer<SignUpCubit, SignUpStates>(
         listener: (context, state) {
           if (state is SignUpLoadingState) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.transparent,
-                elevation: 0.0,
-                title: Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-            );
+            // showDialog(
+            //   context: context,
+            //   builder: (context) => AlertDialog(
+            //     backgroundColor: Colors.transparent,
+            //     elevation: 0.0,
+            //     title: Center(
+            //       child: CircularProgressIndicator(
+            //         backgroundColor: Theme.of(context).primaryColor,
+            //       ),
+            //     ),
+            //   ),
+            // );
+            EasyLoading.show();
           } else if (state is SignUpErrorState) {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                backgroundColor: Colors.white,
-                elevation: 0.0,
-                title: Text("Error : ${state.failure.message}"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              ),
-            );
+            EasyLoading.dismiss();
+            errorToast(context,description: "${state.failure.message}");
+            // showDialog(
+            //   context: context,
+            //   builder: (context) => AlertDialog(
+            //     backgroundColor: Colors.white,
+            //     elevation: 0.0,
+            //     title: Text("Error : ${state.failure.message}"),
+            //     actions: <Widget>[
+            //       TextButton(
+            //         onPressed: () {
+            //           Navigator.of(context).popUntil((route) => route.isFirst);
+            //         },
+            //         child: const Text('OK'),
+            //       ),
+            //     ],
+            //   ),
+            // );
           } else if (state is SignUpSuccessState) {
+            EasyLoading.dismiss();
             CacheHelper.saveData(key: "user", value: state.signUpEntity.token);
             CacheHelper.saveData(key: "username", value: state.signUpEntity.userName);
             CacheHelper.saveData(key: "usermail", value: state.signUpEntity.userEmail);
             CacheHelper.saveData(key: "userphone", value: SignUpCubit().get(context).phoneController.toString());
             navigatorKey.currentState?.pushNamedAndRemoveUntil(PageRouteName.home, (route) => false);
+            successToast(context,description: "SignUp Successfully" ,title: "Sign up");
           }
         },
         builder: (context, state) {
@@ -102,7 +109,7 @@ class _SignUpViewState extends State<SignUpView> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Image.asset(
-                      "assets/images/logos/route_logo.png",
+                      "assets/images/logos/super.png",
                       scale: 1.2,
                     ),
                     Text(

@@ -21,7 +21,17 @@ class FavouriteView extends StatelessWidget {
         return Column(
           children: [
             Expanded(
-              child: ListView.builder(
+              child:  cubit.wishListProduct.isEmpty
+                  ? Center(
+                child: Text(
+                  "Your WishList Is Empty Try to Add new product\n We have New Special Offers ",
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.primaryColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )
+                  : ListView.builder(
                   itemBuilder: (context, index) {
                     return ProductWishListItem(
                        cubit.wishListProduct[index]);

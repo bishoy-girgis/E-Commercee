@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
   final appTheme = ThemeData(
-    primaryColor: const Color(0XFF004182),
+      primaryColor: const Color(0XFF6a1d49), // purple
+      //accentColor:  const Color(0XFF23a0bd),  // lbny
+      accentColor: const Color(0XFF004182), // kohly
     // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     //   type: BottomNavigationBarType.fixed,
     //   backgroundColor:  Color(0XFF004182),
@@ -17,6 +19,11 @@ import 'package:google_fonts/google_fonts.dart';
       displaySmall: GoogleFonts.poppins(
         color:  const Color(0XFF004182),
         fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+      displayMedium: GoogleFonts.irishGrover(
+        color: const Color(0xFF9C296A),
+        fontSize: 16,
         fontWeight: FontWeight.w400,
       ),
       bodySmall: GoogleFonts.poppins(

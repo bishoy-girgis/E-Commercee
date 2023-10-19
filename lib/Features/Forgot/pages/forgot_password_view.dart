@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/Core/extentions/extentions.dart';
+import 'package:e_commerce_app/Core/services/toast.dart';
 import 'package:e_commerce_app/Domain/usecase/login/forgot_password-usecase.dart';
 import 'package:e_commerce_app/Features/Forgot/manager/cubit.dart';
 import 'package:e_commerce_app/Features/Forgot/manager/states.dart';
@@ -6,6 +7,7 @@ import 'package:e_commerce_app/Features/Login/manager/cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../Core/config/page_route_name.dart';
@@ -47,54 +49,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         child: BlocConsumer<ForgotCubit, ForgotStates>(
           listener: (context, state) {
             if (state is ForgotLoadingState) {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0.0,
-                  title: Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
-              );
+              EasyLoading.show();
             } else if (state is ForgotErrorState) {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  backgroundColor: Colors.white,
-                  elevation: 0.0,
-                  title: Text("Error try again later"),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pop(context);
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-              );
+              EasyLoading.dismiss();
+              errorToast(context,title: "Error",description: "Try Again Later");
             } else if (state is ForgotSuccessState) {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  backgroundColor: Colors.white,
-                  elevation: 0.0,
-                  title: Text(state.forgotPasswordEntity.message ?? ""),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        navigatorKey.currentState?.pushNamedAndRemoveUntil(
-                            PageRouteName.login, (route) => false);
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-              );
+              EasyLoading.dismiss();
+              successToast(context,title: "Success",description: (state.forgotPasswordEntity.message));
             }
           },
           builder: (context, state) {

@@ -107,3 +107,24 @@ class DeleteWishListSuccessState extends HomeStates {
 
   DeleteWishListSuccessState(this.model);
 }
+class ShowEditProfileState extends HomeStates {}
+class ShowAddAddressState extends HomeStates {}
+
+class UpdateUserLoadingState extends HomeStates {}
+class UpdateUserErrorState extends HomeStates {
+  Failure failure;
+
+  UpdateUserErrorState(this.failure);
+}
+
+class UpdateUserSuccessState extends HomeStates {}
+
+class AddAddressLoadingState extends HomeStates {}
+class AddAddressErrorState extends HomeStates {
+  Failure failure;
+
+  AddAddressErrorState(this.failure);
+}
+
+class AddAddressSuccessState extends HomeStates {}
+
