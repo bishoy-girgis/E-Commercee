@@ -16,7 +16,7 @@ A feature-rich e-commerce mobile application developed using the Flutter framewo
 
 ## Demo
 
-Watch a video demonstration of the app [here](link_to_video_demo).
+Watch a video demonstration of the app [here](https://drive.google.com/file/d/1WYQiPP-l8Pj1UvK9jLFPyAB2kVj2wUWR/view?usp=sharing).
 
 ## Getting Started
 
