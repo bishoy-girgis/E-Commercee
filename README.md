@@ -13,6 +13,11 @@ A feature-rich e-commerce mobile application developed using the Flutter framewo
 - Developed the project with a clean code architecture for maintainability and scalability.
 - Implemented the BLoC state management pattern in conjunction with the MVVM model for enhanced app stability and code organization.
 
+
+## Demo
+
+Watch a video demonstration of the app [here](link_to_video_demo).
+
 ## Getting Started
 
 This project is a Flutter application. Follow the steps below to get started:
@@ -22,10 +27,3 @@ This project is a Flutter application. Follow the steps below to get started:
 
 For detailed information on Flutter development, refer to the [online documentation](https://docs.flutter.dev/), which provides tutorials, samples, and a full API reference.
 
-## Screenshots
-
-Include screenshots or links to screenshots of your app here.
-
-## Demo
-
-Watch a video demonstration of the app [here](link_to_video_demo).
